@@ -11,7 +11,7 @@ class Player extends Model
 
 
     public function guild(){
-        return $this->hasOne(Guild::class);
+        return $this->belongsTo(Guild::class);
     }
 
     public function user(){

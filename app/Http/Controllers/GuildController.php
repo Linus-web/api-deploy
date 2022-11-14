@@ -7,7 +7,10 @@ use App\Http\Requests\StoreGuildRequest;
 use App\Http\Requests\UpdateGuildRequest;
 use App\Http\Resources\GuildCollection;
 use App\Http\Resources\GuildResource;
+use App\Models\Player;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class GuildController extends Controller
 {
@@ -18,7 +21,6 @@ class GuildController extends Controller
      */
     public function index(Request $request)
     {
-        $includePlayersWithInventories = $request->query('includePlayersWithInventories');
         $includeInventories = $request->query('includeInventories');
         $includePlayers = $request->query('includePlayers');
 
@@ -26,11 +28,7 @@ class GuildController extends Controller
 
         if($includePlayers){
             $guilds = $guilds->with('players');
-        }else if($includePlayersWithInventories){
-            $guilds = $guilds->with('players.inventories.items');
         }
-
-
         
         if($includeInventories){
             $guilds = $guilds->with('inventories.items');
@@ -56,13 +54,12 @@ class GuildController extends Controller
      * @param  \App\Models\Guild  $guild
      * @return \Illuminate\Http\Response
      */
-    public function show(Guild $guild)
+    public function show()
     {
-        $includePlayers = request()->query('includePlayers');
-        if($includePlayers){
-            return new GuildResource($guild->loadMissing('players'));
-        }
-        return new GuildResource($guild);
+        $player =  Player::where('user_id', '=', Auth()->user()->id)->get();
+        $player = $player[0];
+        $guild = $player->guild;
+        return new GuildResource($guild->loadMissing('players'));
     }
 
   

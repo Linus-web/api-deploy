@@ -55,9 +55,10 @@ class PlayerController extends Controller
      */
     public function show(Player $player)
     {
+        
         $userId = auth()->user()->id;
-        $player = $player::where('id', '=' , $userId)->get();        
-        return new PlayerResource($player->loadMissing('inventories.items'));
+        $player = $player::where('user_id', '=' , $userId)->get();        
+        return new PlayerResource($player[0]->loadMissing('inventories.items'));
     }
 
     

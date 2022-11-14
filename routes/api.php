@@ -38,6 +38,10 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::apiResource('guilds', GuildController::class);
     Route::apiResource('players', PlayerController::class);
     Route::apiResource('inventories', InventoryController::class);
+    Route::patch('/updateplayer', [PlayerController::class, 'update']);
+    Route::get('/player', [PlayerController::class, 'show']);
+    Route::post('/storeplayer', [PlayerController::class, 'store']);
+    Route::get('guild', [GuildController::class, 'show']);
 });
 
 

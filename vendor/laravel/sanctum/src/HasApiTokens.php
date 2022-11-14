@@ -49,7 +49,7 @@ trait HasApiTokens
             'name' => $name,
             'token' => hash('sha256', $plainTextToken = Str::random(40)),
             'abilities' => $abilities,
-            'expires_at' => now()->addHours(3),
+            'expires_at' => now()->addDay(),
         ]);
 
         return new NewAccessToken($token, $token->getKey().'|'.$plainTextToken);

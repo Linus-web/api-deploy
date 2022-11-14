@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Guild;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class PlayerResource extends JsonResource
@@ -14,11 +15,12 @@ class PlayerResource extends JsonResource
      */
     public function toArray($request)
     {
-        
+        $guilds = Guild::where('id', '=', $this->guild_id)->get();
+        $guild = $guilds[0]->guild_name;
         return [
             'id' => $this->id,
             'username' => $this->username,
-            'guildId' => $this->guild_id,
+            'guildName' => $guild,
             'inventories' => InventoryResource::collection($this->whenLoaded('inventories'))
         ];
     }
