@@ -2,12 +2,13 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Player;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreInventoryRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Determine if the user is authorized to make this this$this.
      *
      * @return bool
      */
@@ -17,21 +18,30 @@ class StoreInventoryRequest extends FormRequest
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * Get the validation rules that apply to the this$this.
      *
      * @return array<string, mixed>
      */
     public function rules()
     {
-        return [
-            'playerId' => ['required_without:guildId', 'integer', 'prohibits:guildId'],
-            'guildId' => ['required_without:playerId', 'integer', 'prohibits:playerId']
-        ];
+
+        $guildInv = $this->query('guild');
+        $playerInv = $this->query('player');
+        $userId = Auth()->user()->id;
+        $player = Player::where('user_id', '=', $userId)->first();
+        if($guildInv){
+            $this->merge([
+                'guild_id' => $player->guild->id
+            ]);
+        }elseif($playerInv){
+            $this->merge([
+                'player_id' => $player->id
+            ]);
+        }else{
+        }
+
+        return [];
+      
     }
-    protected function prepareForValidation(){
-        $this->merge([
-            'guild_id' => $this->guildId,
-            'player_id' => $this->playerId
-        ]);
-    }
+
 }

@@ -7,9 +7,12 @@ use App\Http\Requests\StorePlayerRequest;
 use App\Http\Requests\UpdatePlayerRequest;
 use App\Http\Resources\PlayerCollection;
 use App\Http\Resources\PlayerResource;
+use App\Models\Inventory;
 use Illuminate\Database\Eloquent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+
+use function PHPUnit\Framework\countOf;
 
 class PlayerController extends Controller
 {
@@ -44,7 +47,21 @@ class PlayerController extends Controller
      */
     public function store(StorePlayerRequest $request)
     {
-        Player::create($request->all());
+
+        if(count(Player::where('user_id', '=', Auth()->user()->id)->get())<1){
+
+            
+            Player::create($request->all());
+            
+            $player = Player::where('user_id', '=', Auth()->user()->id)->get();
+            
+            Inventory::create([
+                'player_id' => $player[0]->id
+            ]);
+            
+        }else{
+            return 'you already have a player connected to this user';
+        }
     }
 
     /**
@@ -58,7 +75,7 @@ class PlayerController extends Controller
         
         $userId = auth()->user()->id;
         $player = $player::where('user_id', '=' , $userId)->get();        
-        return new PlayerResource($player[0]->loadMissing('inventories.items'));
+        return new PlayerResource($player[0]);
     }
 
     

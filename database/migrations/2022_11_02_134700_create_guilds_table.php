@@ -21,7 +21,7 @@ return new class extends Migration
             $table->integer('alliance_id')->nullable();
             $table->timestamps();
 
-            $table->foreign('leader_id')->references('id')->on('players')->onDelete('cascade');
+            $table->foreign('leader_id')->references('id')->on('players');
         });
     }
 

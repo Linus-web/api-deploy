@@ -16,12 +16,9 @@ class InventoryResource extends JsonResource
     public function toArray($request)
     {
 
-
         return [
             'id' => $this->id,
             'inventoryName' => $this->inventory_name,
-            'playerId' => $this->player_id,
-            'guildId' => $this->guild_id,
             'inventoryMaxSize' => $this->inventory_max_size,
             'items' => ItemResource::collection($this->whenLoaded('items'))
         ];

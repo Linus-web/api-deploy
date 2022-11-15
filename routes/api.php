@@ -6,6 +6,7 @@ use App\Http\Controllers\GuildController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\PlayerController;
 use App\Http\Resources\InventoryCollection;
+use App\Models\Inventory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -40,8 +41,9 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::apiResource('inventories', InventoryController::class);
     Route::patch('/updateplayer', [PlayerController::class, 'update']);
     Route::get('/player', [PlayerController::class, 'show']);
-    Route::post('/storeplayer', [PlayerController::class, 'store']);
-    Route::get('guild', [GuildController::class, 'show']);
+    Route::post('/createplayer', [PlayerController::class, 'store']);
+    Route::get('/guild', [GuildController::class, 'show']);
+    Route::get('/inventory', [InventoryController::class, 'show']);
 });
 
 

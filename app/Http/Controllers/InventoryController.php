@@ -7,7 +7,10 @@ use App\Http\Requests\StoreInventoryRequest;
 use App\Http\Requests\UpdateInventoryRequest;
 use App\Http\Resources\InventoryCollection;
 use App\Http\Resources\InventoryResource;
+use App\Models\Guild;
+use App\Models\Player;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class InventoryController extends Controller
 {
@@ -34,7 +37,25 @@ class InventoryController extends Controller
      */
     public function store(StoreInventoryRequest $request)
     {
-        return new InventoryResource(Inventory::create($request->all()));
+        $array = $request->all();
+        if(array_key_exists('guild_id', $array)){
+            if(count(Inventory::where('guild_id','=', $array['guild_id'] )->get())<1)
+            return new InventoryResource(Inventory::create($request->all()));
+            else
+            return 'guild already has an inventory';
+        }elseif(array_key_exists('player_id', $array)){
+            if(count(Inventory::where('player_id','=', $array['player_id'] )->get())<1)
+            return new InventoryResource(Inventory::create($request->all()));
+            else
+            return 'player already has an inventory';
+        }else{
+            return ' faulty request  ';
+        }
+        
+
+
+
+        
     }
 
     /**
@@ -43,9 +64,12 @@ class InventoryController extends Controller
      * @param  \App\Models\Inventory  $inventory
      * @return \Illuminate\Http\Response
      */
-    public function show(Inventory $inventory)
+    public function show()
     {
-        return new InventoryResource($inventory->loadMissing('items'));
+
+        $player = Player::where('user_id', '=',Auth()->user()->id)->get() ;
+        $inventory = Inventory::where('player_id', '=', $player[0]->id)->get();
+        return new InventoryResource($inventory[0]->loadMissing('items'));
     }
 
   
@@ -67,8 +91,5 @@ class InventoryController extends Controller
      * @param  \App\Models\Inventory  $inventory
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Inventory $inventory)
-    {
-        $inventory->delete($inventory);
-    }
+    
 }

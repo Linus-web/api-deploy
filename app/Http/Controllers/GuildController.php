@@ -45,6 +45,7 @@ class GuildController extends Controller
      */
     public function store(StoreGuildRequest $request)
     {
+        
         return new GuildResource(Guild::create($request->all()));
     }
 
@@ -59,7 +60,7 @@ class GuildController extends Controller
         $player =  Player::where('user_id', '=', Auth()->user()->id)->get();
         $player = $player[0];
         $guild = $player->guild;
-        return new GuildResource($guild->loadMissing('players'));
+        return new GuildResource($guild->loadMissing(['players', 'inventories.items']));
     }
 
   
