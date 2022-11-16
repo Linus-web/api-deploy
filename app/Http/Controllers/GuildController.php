@@ -7,6 +7,7 @@ use App\Http\Requests\StoreGuildRequest;
 use App\Http\Requests\UpdateGuildRequest;
 use App\Http\Resources\GuildCollection;
 use App\Http\Resources\GuildResource;
+use App\Models\Inventory;
 use App\Models\Player;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -45,8 +46,24 @@ class GuildController extends Controller
      */
     public function store(StoreGuildRequest $request)
     {
+        $user = Auth()->user();
+        $player = Player::where('user_id','=',$user->id)->get();
+        $player = $player[0];
+        $request->merge([
+            'leader_id' => $player->id
+        ]);
+        Guild::create($request->all());
+        Player::where('user_id','=',$user->id)->update([
+            'guild_id'=> Guild::where('guild_name','=', $request->guild_name)->first()->id,
+        ]);
+        Inventory::create([
+            'guild_id' => Guild::where('guild_name','=', $request->guild_name)->first()->id,
+        ]);
+
         
-        return new GuildResource(Guild::create($request->all()));
+
+
+        return 'guild created successfully';
     }
 
     /**

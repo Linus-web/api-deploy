@@ -14,7 +14,6 @@ class ItemInfoResource extends JsonResource
      */
     public function toArray($request)
     {
-
         return [
             'baseLvl' => $this->base_lvl,
             'itemName' => $this->item_name

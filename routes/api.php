@@ -4,6 +4,7 @@ use App\Http\Controllers\AllianceController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\GuildController;
 use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\ItemController;
 use App\Http\Controllers\PlayerController;
 use App\Http\Resources\InventoryCollection;
 use App\Models\Inventory;
@@ -39,11 +40,13 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::apiResource('guilds', GuildController::class);
     Route::apiResource('players', PlayerController::class);
     Route::apiResource('inventories', InventoryController::class);
+    Route::apiResource('items',ItemController::class);
     Route::patch('/updateplayer', [PlayerController::class, 'update']);
     Route::get('/player', [PlayerController::class, 'show']);
     Route::post('/createplayer', [PlayerController::class, 'store']);
     Route::get('/guild', [GuildController::class, 'show']);
     Route::get('/inventory', [InventoryController::class, 'show']);
+    Route::post('/createItem', [ItemController::class, 'store']);
 });
 
 

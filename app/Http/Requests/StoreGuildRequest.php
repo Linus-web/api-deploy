@@ -25,14 +25,12 @@ class StoreGuildRequest extends FormRequest
     {
         return [
             'guildName' => ['required', 'unique:guilds,guild_name'],
-            'leaderId' => ['required', 'unique:guilds,leader_id']
         ];
     }
 
     protected function prepareForValidation(){
         $this->merge([
             'guild_name' => $this->guildName,
-            'leader_id' => $this->leaderId
         ]);
     }
 

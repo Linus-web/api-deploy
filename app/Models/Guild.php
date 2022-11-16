@@ -23,7 +23,6 @@ class Guild extends Model
 
     protected $attributes = [
         'inventory_amount' => 1,
-        'alliance_id' => 0,
     ];
 
     protected $fillable = [

@@ -10,7 +10,7 @@ class Item extends Model
     use HasFactory;
 
     public function inventories(){
-        return $this->belongsToMany(Inventory::class);
+        return $this->belongsTo(Inventory::class);
     }
 
     public function Armors(){
@@ -33,6 +33,7 @@ class Item extends Model
     }
 
     protected $fillable = [
+        'inventory_id',
         'armor_id',
         'weapon_id',
         'jewellery_id',

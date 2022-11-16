@@ -49,7 +49,7 @@ class InventoryController extends Controller
             else
             return 'player already has an inventory';
         }else{
-            return ' faulty request  ';
+            return ' needs to have guild or player parameter  ';
         }
         
 
@@ -67,9 +67,9 @@ class InventoryController extends Controller
     public function show()
     {
 
-        $player = Player::where('user_id', '=',Auth()->user()->id)->get() ;
-        $inventory = Inventory::where('player_id', '=', $player[0]->id)->get();
-        return new InventoryResource($inventory[0]->loadMissing('items'));
+        $player = Player::where('user_id', '=',Auth()->user()->id)->first() ;
+        $inventory = Inventory::where('player_id', '=', $player->id)->first();
+        return new InventoryResource($inventory);
     }
 
   

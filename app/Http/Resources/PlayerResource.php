@@ -15,13 +15,21 @@ class PlayerResource extends JsonResource
      */
     public function toArray($request)
     {
-        $guilds = Guild::where('id', '=', $this->guild_id)->get();
-        $guild = $guilds[0]->guild_name;
-        return [
-            'id' => $this->id,
-            'username' => $this->username,
-            'guildName' => $guild,
-            'inventories' => InventoryResource::collection($this->whenLoaded('inventories'))
-        ];
+        $guild = Guild::where('id', '=', $this->guild_id)->first();
+        if($guild){
+
+            return [
+                'id' => $this->id,
+                'username' => $this->username,
+                'guildName' => $guild->guild_name,
+                'inventories' => InventoryResource::collection($this->whenLoaded('inventories'))
+            ];
+        }else{
+            return [
+                'id' => $this->id,
+                'username' => $this->username,
+                'inventories' => InventoryResource::collection($this->whenLoaded('inventories'))
+            ];
+        }
     }
 }

@@ -15,12 +15,10 @@ class InventoryResource extends JsonResource
      */
     public function toArray($request)
     {
-
         return [
-            'id' => $this->id,
             'inventoryName' => $this->inventory_name,
             'inventoryMaxSize' => $this->inventory_max_size,
-            'items' => ItemResource::collection($this->whenLoaded('items'))
+            'items' => ItemResource::collection($this->items),
         ];
     }
 }

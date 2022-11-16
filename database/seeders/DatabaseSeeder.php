@@ -36,18 +36,18 @@ class DatabaseSeeder extends Seeder
 
        
 
-        User::factory()
-        ->count(100)
-        ->has(
-            Player::factory()
-            ->count(random_int(1,3))
-            ->has(Inventory::factory(1)->has(Item::factory(5)))
-        )
-        ->create();
+        // User::factory()
+        // ->count(100)
+        // ->has(
+        //     Player::factory()
+        //     ->count(random_int(1,3))
+        //     ->has(Inventory::factory(1)->has(Item::factory(5)))
+        // )
+        // ->create();
 
-        Guild::factory()
-        ->count(4)
-        ->create();
+        // Guild::factory()
+        // ->count(4)
+        // ->create();
         
 
 

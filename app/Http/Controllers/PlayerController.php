@@ -74,8 +74,8 @@ class PlayerController extends Controller
     {
         
         $userId = auth()->user()->id;
-        $player = $player::where('user_id', '=' , $userId)->get();        
-        return new PlayerResource($player[0]);
+        $player = $player::where('user_id', '=' , $userId)->first(); 
+        return new PlayerResource($player);
     }
 
     

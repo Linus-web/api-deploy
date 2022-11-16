@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Item;
 use App\Http\Requests\StoreItemRequest;
 use App\Http\Requests\UpdateItemRequest;
+use App\Http\Resources\ItemResource;
+use App\Models\Inventory;
+use App\Models\Player;
+use Illuminate\Support\Facades\Auth;
 
 class ItemController extends Controller
 {
@@ -36,7 +40,16 @@ class ItemController extends Controller
      */
     public function store(StoreItemRequest $request)
     {
-        //
+        $user = Auth()->user()->id;
+        $player = Player::where('user_id', $user)->first();
+        
+
+        $request->merge([
+            'inventory_id' => $player->inventories->first()->id,
+        ]);
+
+
+        Item::create($request->all());
     }
 
     /**
@@ -81,6 +94,16 @@ class ItemController extends Controller
      */
     public function destroy(Item $item)
     {
-        //
+        $user= Auth()->user();
+        $player = Player::where('user_id', $user->id)->first();
+        $inventory = Inventory::where('player_id', $player->id)->first();
+
+        $items= Item::where('inventory_id', $inventory->id)->get()->toArray();
+        $itemArrayItem = $item->toArray();
+        if(in_array($itemArrayItem,$items)){    
+            $item->delete($item);
+            return 'item deleted';
+        }
+        return 'item did not delete';
     }
 }
