@@ -38,14 +38,15 @@ class StoreItemRequest extends FormRequest
             $this->merge([
                 'weapon_id' => $this->weaponId,
             ]);
-        }else if($this->armorId){
+        }
+        if($this->armorId){
             $this->merge([
-                'weapon_id' => $this->armorId,
+                'armor_id' => $this->armorId,
             ]);
         }
-        else if($this->jewelleryId){
+        if($this->jewelleryId){
             $this->merge([
-                'weapon_id' => $this->jewelleryId,
+                'jewellery_id' => $this->jewelleryId,
             ]);
         }
 
